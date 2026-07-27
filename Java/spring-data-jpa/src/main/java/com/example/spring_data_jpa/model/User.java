@@ -25,21 +25,20 @@ public class User {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    @Column
     private Long id;
 
-    @Column(name="USERNAME", length = 255, nullable = false, unique = false)
+    @Column(name="username", length = 255, nullable = false, unique = false)
     private String username;
 
-    @Column(name="USERNAME", length = 255, nullable = false, unique = false)
+    @Column(name="email", length = 255, nullable = false, unique = false)
     private String email;
 
-    @Column(name="PASSWORD", length = 255, nullable = false, unique = false)
+    @Column(name="password", length = 255, nullable = false, unique = false)
     private String password;
 
-    @Column(name="FIRSTNAME", length = 255, nullable = true, unique = false)
+    @Column(name="firstname", length = 255, nullable = true, unique = false)
     private String firstname;
 
-    @Column(name="LASTNAME", length = 255, nullable = true, unique = false)
+    @Column(name="lastname", length = 255, nullable = true, unique = false)
     private String lastname;
 }
