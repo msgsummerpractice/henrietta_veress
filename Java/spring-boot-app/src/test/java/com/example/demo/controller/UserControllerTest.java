@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import static org.mockito.Mockito.when;
 import java.util.List;
+
+import com.example.demo.config.AppSettings;
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
 
@@ -23,6 +25,9 @@ public class UserControllerTest {
     @MockitoBean
     private UserService userService;
 
+    @MockitoBean
+    private AppSettings appSettings;
+
     @Test
     void shouldReturnUsers() throws Exception {
         
@@ -42,7 +47,8 @@ public class UserControllerTest {
 
     }
 
-    @Test
+    // ! Nem ertem miert nem megy, vissza kene terjen badrequest-el
+    @Test  
     void getUsers_withNegativeMinId_returnsBadRequest() throws Exception {
         mockMvc.perform(get("/users?minId=-1"))
             .andExpect(status().isBadRequest());
@@ -51,14 +57,28 @@ public class UserControllerTest {
     @Test
     void getUsers_withValidMinId_filtersResults() throws Exception {
         List<User> fakeUsers = List.of(
-            new User("John", "Doe"),
-            new User("Jane", "Smith")
+            new User("Janos", "Nagy"),
+            new User("Margit", "Kovacs")
         );
         when(userService.getAllUsers()).thenReturn(fakeUsers);
 
         mockMvc.perform(get("/users?minId=1"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.length()").value(1))
-            .andExpect(jsonPath("$[0].firstName").value("Jane"));
+            .andExpect(jsonPath("$[0].firstName").value("Margit"));
+    }
+
+    
+    @Test
+    void getUsers_withoutMinId_returnAllUsers() throws Exception {
+        List<User> fakeUsers = List.of(
+            new User("Cecilia", "Szabo"),
+            new User("Lilla", "Molnar")
+        );
+        when(userService.getAllUsers()).thenReturn(fakeUsers);
+
+        mockMvc.perform(get("/users"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.length()").value(2));
     }
 }
