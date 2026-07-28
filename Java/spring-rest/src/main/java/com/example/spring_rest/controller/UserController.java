@@ -12,13 +12,17 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.spring_rest.dto.UpdateUserRequest;
+import com.example.spring_rest.dto.UserRequest;
+import com.example.spring_rest.dto.UserResponse;
 import com.example.spring_rest.model.User;
 import com.example.spring_rest.service.UserService;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("api/users")
@@ -32,39 +36,33 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
+    public ResponseEntity<List<UserResponse>> getAllUsers() {
+        List<UserResponse> users = userService.getAllUsers();
         return ResponseEntity.ok(users); // 200 ok
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        Optional<User> result = userService.getUserById(id);
-
-        if (result.isPresent()) {
-            User user = result.get();
-            return ResponseEntity.ok(user); // 200 ok
-        } else {
-            return ResponseEntity.notFound().build();  // 404 not found
-        }
+    public ResponseEntity<UserResponse> getUserById(@PathVariable Long id) {
+        UserResponse response = userService.getUserById(id);
+        return ResponseEntity.ok(response); // 200 ok
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User createdUser = userService.createUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser); // 201 created
+    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserRequest request) {
+        UserResponse response = userService.createUser(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response); // 201 created
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
-        User result = userService.updateUser(id, updatedUser);
-        return ResponseEntity.ok(result);  // 200 ok
+    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @RequestBody UpdateUserRequest request) {
+        UserResponse response = userService.updateUser(id, request);
+        return ResponseEntity.ok(response);  // 200 ok
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<User> partialUpdateUser(@PathVariable Long id, @RequestBody User partialUser) {
-        User result = userService.partialUpdateUser(id, partialUser);
-        return ResponseEntity.ok(result);  // 200 ok
+    public ResponseEntity<UserResponse> partialUpdateUser(@PathVariable Long id, @RequestBody UpdateUserRequest request) {
+        UserResponse response = userService.partialUpdateUser(id, request);
+        return ResponseEntity.ok(response);  // 200 ok
     }
     
     @DeleteMapping("/id")

@@ -1,5 +1,7 @@
 package com.example.spring_rest.model;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -41,6 +43,9 @@ public class User {
 
     @Column(name="lastname", length = 255, nullable = true, unique = false)
     private String lastname;
+
+    @Column(name="created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
     public User(String username, String email, String password) {
         this.username = username;

@@ -29,8 +29,8 @@ public class UserServiceTest {
 
     @Test
     void testCreateUser() {
-        User user = new User(null, "heni", "heniveress@pelda.com", "alma123", "Henrietta", "Veress");
-        User savedUser = new User(1L, "heni", "heniveress@pelda.com", "alma123", "Henrietta", "Veress");
+        User user = new User(null, "heni", "heniveress@pelda.com", "alma123", "Henrietta", "Veress", null);
+        User savedUser = new User(1L, "heni", "heniveress@pelda.com", "alma123", "Henrietta", "Veress", null);
        
         when(userRepository.save(user)).thenReturn(savedUser);
 
@@ -42,8 +42,8 @@ public class UserServiceTest {
 
     @Test
     void testGetAllUsers() {
-        User user1 = new User(1L, "heni", "heniveress@pelda.com", "alma123", "Henrietta", "Veress");
-        User user2 = new User(2l, "marci", "marcik@pelda.com", "korte123", "Marci", "Pek");
+        User user1 = new User(1L, "heni", "heniveress@pelda.com", "alma123", "Henrietta", "Veress", null);
+        User user2 = new User(2l, "marci", "marcik@pelda.com", "korte123", "Marci", "Pek", null);
 
         when(userRepository.findAll()).thenReturn(List.of(user1, user2));
 
@@ -54,7 +54,7 @@ public class UserServiceTest {
 
     @Test
     void testGetUserById_found() {
-        User user = new User(1L, "heni", "heniveress@pelda.com", "alma123", "Henrietta", "Veress");
+        User user = new User(1L, "heni", "heniveress@pelda.com", "alma123", "Henrietta", "Veress", null);
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
 
@@ -75,7 +75,7 @@ public class UserServiceTest {
     
     @Test
     void testGetByUsername_found() {
-        User user = new User(1L, "heni", "heniveress@pelda.com", "alma123", "Henrietta", "Veress");
+        User user = new User(1L, "heni", "heniveress@pelda.com", "alma123", "Henrietta", "Veress", null);
 
         when(userRepository.findByUsername("heni")).thenReturn(Optional.of(user));
 
@@ -96,7 +96,7 @@ public class UserServiceTest {
 
     @Test
     void testGetUserByEmail() {
-        User user = new User(1L, "heni", "heniveress@pelda.com", "alma123", "Henrietta", "Veress");
+        User user = new User(1L, "heni", "heniveress@pelda.com", "alma123", "Henrietta", "Veress", null);
 
         when(userRepository.findbyEmail("heniveress@pelda.com")).thenReturn(Optional.of(user));
 
@@ -108,8 +108,8 @@ public class UserServiceTest {
 
     @Test
     void testUpdateUser() {
-        User updatedData = new User(null, "heni_uj", "heniuj@pelda.com", "ujalma123", "Henrietta", "Veress");
-        User savedUser = new User(1L, "heni_uj", "heniuj@pelda.com", "ujalma123", "Henrietta", "Veress");
+        User updatedData = new User(null, "heni_uj", "heniuj@pelda.com", "ujalma123", "Henrietta", "Veress", null);
+        User savedUser = new User(1L, "heni_uj", "heniuj@pelda.com", "ujalma123", "Henrietta", "Veress", null);
 
         when(userRepository.save(updatedData)).thenReturn(savedUser);
 
