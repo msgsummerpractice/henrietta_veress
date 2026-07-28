@@ -29,7 +29,9 @@ public class UserService {
         // Convert DTO to Entity
         User user = new User(); 
         user.setUsername(request.getUsername()); 
-        user.setEmail(request.getEmail());  
+        user.setEmail(request.getEmail());
+        user.setFirstname(request.getFirstname());
+        user.setLastname(request.getLastname());  
         user.setPassword(encryptPassword(request.getPassword()));
         user.setCreatedAt(LocalDateTime.now());
 
@@ -62,7 +64,7 @@ public class UserService {
     }
 
     public Optional<UserResponse> getUserByEmail(String email) {
-        return userRepository.findbyEmail(email).map(this::convertToResponse);
+        return userRepository.findByEmail(email).map(this::convertToResponse);
     }
 
     public UserResponse updateUser(Long id, UpdateUserRequest updateRequest) {
