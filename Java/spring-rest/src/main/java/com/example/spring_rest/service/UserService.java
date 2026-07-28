@@ -1,6 +1,7 @@
 package com.example.spring_rest.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,12 +40,34 @@ public class UserService {
         return userRepository.findbyEmail(email);
     }
 
-    public User updaUser(Long id, User updatedUser) {
+    public User updateUser(Long id, User updatedUser) {
         updatedUser.setId(id);
         return userRepository.save(updatedUser);
     }
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    public User partialUpdateUser(Long id, User partialUser) {
+        User currentUser = userRepository.findById(id)
+            .orElseThrow(() -> new NoSuchElementException("No user with this id: " + id));
+        
+        if (partialUser.getUsername() != null) {
+            currentUser.setUsername(partialUser.getUsername());
+        }
+        if (partialUser.getPassword() != null) {
+            currentUser.setPassword(partialUser.getPassword());
+        }
+        if (partialUser.getEmail() != null) {
+            currentUser.setEmail(partialUser.getEmail());
+        }
+        if (partialUser.getFirstname() != null) {
+            currentUser.setFirstname(partialUser.getFirstname());
+        }
+        if (partialUser.getLastname() != null) {
+            currentUser.setLastname(partialUser.getLastname());
+        }
+        return userRepository.save(currentUser);
     }
 }

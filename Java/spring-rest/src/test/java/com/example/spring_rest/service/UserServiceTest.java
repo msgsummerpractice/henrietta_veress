@@ -113,7 +113,7 @@ public class UserServiceTest {
 
         when(userRepository.save(updatedData)).thenReturn(savedUser);
 
-        User result = userService.updaUser(1L, updatedData);
+        User result = userService.updateUser(1L, updatedData);
 
         assertEquals(1L, result.getId());
         assertEquals("heni_uj", result.getUsername());

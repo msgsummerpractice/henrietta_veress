@@ -41,4 +41,10 @@ public class User {
 
     @Column(name="lastname", length = 255, nullable = true, unique = false)
     private String lastname;
+
+    public User(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
 }
