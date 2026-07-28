@@ -1,9 +1,8 @@
 package com.example.spring_rest.config;
 
-import org.springframework.security.config.Customizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,16 +16,26 @@ import org.springframework.security.core.userdetails.User;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
 public class SecurityConfig {
     
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http.authorizeHttpRequests(auth -> auth
-                .anyRequest().authenticated()
-            )   .httpBasic(Customizer.withDefaults()
-        );
+        http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(auth -> auth
+                    
+                    // delete csak adminnak
+                    .requestMatchers(HttpMethod.DELETE, "/api/users/**")
+                    .hasRole("ADMIN")
+
+                    // user endpointok
+                    .requestMatchers("/api/users/**")
+                    .hasAnyRole("ADMIN", "USER")
+
+                    // minden mas endpint
+                    .anyRequest()
+                    .authenticated()
+            )
+            .httpBasic(httpBasic -> {});
 
         return http.build();
     }

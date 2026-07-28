@@ -81,10 +81,7 @@ public class UserController {
         return ResponseEntity.ok(response);  // 200 ok
     }
     
-    @DeleteMapping(value = "/{id}", produces = {
-            MediaType.APPLICATION_JSON_VALUE,
-            MediaType.APPLICATION_XML_VALUE
-    })
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build(); // 204 no content
