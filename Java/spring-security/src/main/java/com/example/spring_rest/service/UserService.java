@@ -3,6 +3,7 @@ package com.example.spring_rest.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,17 +13,25 @@ import com.example.spring_rest.dto.UpdateUserRequest;
 import com.example.spring_rest.dto.UserRequest;
 import com.example.spring_rest.dto.UserResponse;
 import com.example.spring_rest.exception.ResourceNotFoundException;
+import com.example.spring_rest.model.Role;
 import com.example.spring_rest.model.User;
+import com.example.spring_rest.repository.IRoleRepository;
 import com.example.spring_rest.repository.IUserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 @Service  // -> handles conversion btween dtos and entities
 public class UserService {
 
     private final IUserRepository userRepository;
+    private final IRoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired   // -> konstruktor injection
-    public UserService(IUserRepository userRepository) {
+    public UserService(IUserRepository userRepository, IRoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UserResponse createUser(UserRequest request) {
@@ -34,6 +43,11 @@ public class UserService {
         user.setLastname(request.getLastname());  
         user.setPassword(encryptPassword(request.getPassword()));
         user.setCreatedAt(LocalDateTime.now());
+
+        Role userRole = roleRepository.findByName("USER")
+                                      .orElseThrow(() -> new ResourceNotFoundException("USER role not found"));
+
+        user.setRoles(Set.of(userRole));
 
         // Save entity to database
         User savedUser = userRepository.save(user);
@@ -119,6 +133,6 @@ public class UserService {
     }
 
     private String encryptPassword(String rawPassword) {
-        return rawPassword;
+        return passwordEncoder.encode(rawPassword);
     }
 }

@@ -25,7 +25,7 @@ import com.example.spring_rest.service.UserService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("api/users")
+@RequestMapping("/api/users")
 @Validated
 public class UserController {
 

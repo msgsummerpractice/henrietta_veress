@@ -18,53 +18,69 @@ import org.springframework.security.core.userdetails.User;
 @EnableWebSecurity
 public class SecurityConfig {
     
-    @Bean
+@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/login.html", "/login").permitAll()
-                    
-                    // delete csak adminnak
-                    .requestMatchers(HttpMethod.DELETE, "/api/users/**")
-                    .hasRole("ADMIN")
+        http
+            .csrf(csrf -> csrf.disable())
 
-                    // user endpointok
-                    .requestMatchers("/api/users/**")
-                    .hasAnyRole("ADMIN", "USER")
+            .authorizeHttpRequests(auth -> auth
 
-                    // minden mas endpint
-                    .anyRequest()
-                    .authenticated()
-            )
-            .formLogin(form -> form
-                .loginPage("/login.html")
-                .defaultSuccessUrl("/api/users", true)
+                .requestMatchers(HttpMethod.POST, "/api/users")
                 .permitAll()
+
+                .requestMatchers(HttpMethod.DELETE, "/api/users/**")
+                .hasRole("ADMIN")
+
+                .requestMatchers("/api/users/**")
+                .hasAnyRole("ADMIN", "USER")
+
+                .anyRequest()
+                .authenticated()
             )
+
+            // .formLogin(form -> form
+            //     .loginPage("/login.html")
+            //     .defaultSuccessUrl("/api/users", true)
+            //     .permitAll()
+            // )
+
             .httpBasic(httpBasic -> {});
 
         return http.build();
     }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
+//     @Bean
+//     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password(passwordEncoder().encode("admin123"))
-                .roles("ADMIN")
-                .build();
+//     http
+//         .csrf(csrf -> csrf.disable())
+//         .authorizeHttpRequests(auth -> auth
+//             .anyRequest().permitAll()
+//         );
+
+//     return http.build();
+// }
+
+    // @Bean
+    // public UserDetailsService userDetailsService() {
+
+    //     UserDetails admin = User.builder()
+    //             .username("admin")
+    //             .password(passwordEncoder().encode("admin123"))
+    //             .roles("ADMIN")
+    //             .build();
 
 
-        UserDetails user = User.builder()
-                .username("user")
-                .password(passwordEncoder().encode("user123"))
-                .roles("USER")
-                .build();
+    //     UserDetails user = User.builder()
+    //             .username("user")
+    //             .password(passwordEncoder().encode("user123"))
+    //             .roles("USER")
+    //             .build();
 
 
-        return new InMemoryUserDetailsManager(admin, user);
-    }
+    //     return new InMemoryUserDetailsManager(admin, user);
+    // }
 
 
     @Bean
