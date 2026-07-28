@@ -1,9 +1,11 @@
 package com.example.spring_rest.controller;
 
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -30,34 +32,45 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        return ResponseEntity.ok(users); // 200 ok
     }
 
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id) {
-        return userService.getUserById(id)
-            .orElseThrow(() -> new NoSuchElementException("No user with this id: " + id));
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        Optional<User> result = userService.getUserById(id);
+
+        if (result.isPresent()) {
+            User user = result.get();
+            return ResponseEntity.ok(user); // 200 ok
+        } else {
+            return ResponseEntity.notFound().build();  // 404 not found
+        }
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        User createdUser = userService.createUser(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser); // 201 created
     }
 
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
-        return userService.updateUser(id, updatedUser);
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
+        User result = userService.updateUser(id, updatedUser);
+        return ResponseEntity.ok(result);  // 200 ok
     }
 
     @PatchMapping("/{id}")
-    public User partialUpdateUser(@PathVariable Long id, @RequestBody User partialUser) {
-        return userService.partialUpdateUser(id, partialUser);
+    public ResponseEntity<User> partialUpdateUser(@PathVariable Long id, @RequestBody User partialUser) {
+        User result = userService.partialUpdateUser(id, partialUser);
+        return ResponseEntity.ok(result);  // 200 ok
     }
     
     @DeleteMapping("/id")
-    public void deleteUser(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
+        return ResponseEntity.noContent().build(); // 204 no content
     }
 }
 
