@@ -22,6 +22,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(auth -> auth
+                    .requestMatchers("/login.html", "/login").permitAll()
                     
                     // delete csak adminnak
                     .requestMatchers(HttpMethod.DELETE, "/api/users/**")
@@ -34,6 +35,11 @@ public class SecurityConfig {
                     // minden mas endpint
                     .anyRequest()
                     .authenticated()
+            )
+            .formLogin(form -> form
+                .loginPage("/login.html")
+                .defaultSuccessUrl("/api/users", true)
+                .permitAll()
             )
             .httpBasic(httpBasic -> {});
 
