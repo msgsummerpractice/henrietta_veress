@@ -81,7 +81,7 @@ public class UserController {
         return ResponseEntity.ok(response);  // 200 ok
     }
     
-    @DeleteMapping(value = "/id", produces = {
+    @DeleteMapping(value = "/{id}", produces = {
             MediaType.APPLICATION_JSON_VALUE,
             MediaType.APPLICATION_XML_VALUE
     })
