@@ -13,7 +13,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import com.example.spring_rest.security.MfaService;
 
+import com.example.spring_rest.dto.MfaVerifyRequest;
 import com.example.spring_rest.dto.RegisterRequest;
 import com.example.spring_rest.dto.SignInRequest;
 import com.example.spring_rest.dto.SignInResponse;
@@ -33,15 +35,19 @@ public class AuthService implements IAuthService {
     private final IUserRepository userRepository;
     private final IRoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MfaService mfaService;   
     
     @Value("${jwt.secret}")
     private String jwtSecret;
 
-    public AuthService(AuthenticationManager authenticationManager, IUserRepository userRepository, IRoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public AuthService(AuthenticationManager authenticationManager, IUserRepository userRepository, 
+                        IRoleRepository roleRepository, PasswordEncoder passwordEncoder,
+                        MfaService mfaService) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.mfaService = mfaService;
     }
 
     private SecretKey getKey() {
@@ -98,4 +104,28 @@ public class AuthService implements IAuthService {
         return userRepository.save(user);
     }
 
+    @Override
+    public SignInResponse verifyMfa(MfaVerifyRequest request) {
+        boolean valid = mfaService.verifyCode(request.getUserName(), request.getCode());
+        if (!valid) {
+            throw new RuntimeException("Ervenytelen vagy lejart MFA kod");
+        }
+
+        User user = userRepository.findByUserName(request.getUserName())
+            .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<String> roleNames = user.getRoles().stream()
+            .map(role -> role.getName())
+            .collect(Collectors.toList());
+
+        String token = Jwts.builder()
+            .subject(user.getUserName())
+            .claim("roles", roleNames)
+            .issuedAt(new Date())
+            .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
+            .signWith(getKey())
+            .compact();
+
+        return new SignInResponse(token, user.getRoles());
+    }
 }
