@@ -6,7 +6,7 @@
     <title>Dog Gallery</title>
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body class="bg-gray-50 text-gray-800 min-h-screen">
+  <body>
 
     <app-navbar></app-navbar>
 
@@ -24,37 +24,60 @@
         <article
           class="bg-white border border-gray-200 rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow"
         >
-          <img src="https://headsupfortails.com/cdn/shop/articles/Labrador_Retriever_Dog_Breed_dea12ce1-775e-464f-877a-08f2001ddd75.jpg?v=1767872193">
+          <div class="w-full h-80 bg-gray-200 rounded-md mb-2 flex items-center justify-center">
+            @if (dogos()[0].imageUrl) {
+              <img [src]="dogos()[0].imageUrl" [alt]="dogos()[0].name" class="w-full h-80 object-cover rounded-md mb-2" />
+            } @else {
+              <span class="text-gray-400 text-sm">Loading...</span>
+            }
+          </div>
           <h2 class="sm:text-2xl font-bold text-gray-900 mb-2 mt-1">Labrador</h2>
           <p class="text-gray-600">
-            They are really friendly, great family dog. Intelligent fluffballs.
+            {{ dogos()[0].description }}
           </p>
         </article>
 
         <article
           class="bg-white border border-gray-200 rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow"
         > 
-          <img src="https://yumove.co.uk/cdn/shop/files/Hungarian-Vizla.webp?v=1757435739&width=550">
+          <div class="w-full h-80 bg-gray-200 rounded-md mb-2 flex items-center justify-center">
+            @if (dogos()[1].imageUrl) {
+              <img [src]="dogos()[1].imageUrl" [alt]="dogos()[1].name" class="w-full h-80 object-cover rounded-md mb-2" />
+            } @else {
+              <span class="text-gray-400 text-sm">Loading...</span>
+            }
+          </div>
           <h2 class="sm:text-2xl font-bold text-gray-900 mb-2 mt-1">Vizsla</h2>
           <p class="text-gray-600">
-            Beautiful loyal doggo.
+            {{ dogos()[1].description }}
           </p>
         </article>
 
         <article
           class="bg-white border border-gray-200 rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow"
         >
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSC5tzWAFoQWDGc7pywuoRH1_hrTbj6No7bmCZGSaLXfdXDhT6LnYTivYc&s=10">
+          <div class="w-full h-80 bg-gray-200 rounded-md mb-2 flex items-center justify-center">
+            @if (dogos()[2].imageUrl) {
+              <img [src]="dogos()[2].imageUrl" [alt]="dogos()[2].name" class="w-full h-80 object-cover rounded-md mb-2" />
+            } @else {
+              <span class="text-gray-400 text-sm">Loading...</span>
+            }
+          </div>
           <h2 class="sm:text-2xl font-bold text-gray-900 mb-2 mt-1">Akita</h2>
           <p class="text-gray-600">
-            A bit sassy, but extremly loyal to his owner.
+            {{ dogos()[2].description }}
           </p>
         </article>
 
 
       </main>
 
-      <button class="text-center mt-8" mat-raised-button>APASĂ-L!</button>
+      <div class="text-center mt-8">
+        <button mat-raised-button (click)="onButtonClick()">
+          Show me dogos!
+        </button>
+      </div>
+
     </div>
   </body>
 </html>
