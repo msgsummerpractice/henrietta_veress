@@ -11,12 +11,12 @@ import com.example.spring_rest.model.User;
 
 public interface IUserRepository extends JpaRepository<User, Long> {
     
-    Optional<User> findByUsername(String userName);  // -> driver query metodusok
+    Optional<User> findByUserName(String userName);  // -> driver query metodusok
     Optional<User> findByEmail(String email);
     boolean existsByUserName(String userName);
 
-    @Query("SELECT u FROM User u ORDER BY LOWER(u.username) ASC")
-    List<User> findTop10UsersOrderedByUsername(Pageable pageable);
+    @Query("SELECT u FROM User u ORDER BY LOWER(u.userName) ASC")
+    List<User> findTop10UsersOrderedByUserName(Pageable pageable);
 
     @Query("SELECT COUNT(u) FROM User u")
     long countUsers();

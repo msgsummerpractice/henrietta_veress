@@ -86,7 +86,7 @@ public class UserService {
     }
 
     public Optional<UserResponse> getUserByUserName(String userName) {
-        return userRepository.findByUsername(userName).map(this::convertToResponse);
+        return userRepository.findByUserName(userName).map(this::convertToResponse);
     }
 
     public Optional<UserResponse> getUserByEmail(String email) {
