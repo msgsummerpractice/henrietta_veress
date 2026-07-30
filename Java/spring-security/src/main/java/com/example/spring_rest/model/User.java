@@ -36,26 +36,26 @@ public class User {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
-    @Column(name="username", length = 255, nullable = false, unique = false)
-    private String username;
+    @Column(name="userName", length = 50, nullable = false, unique = false)
+    private String userName;
 
-    @Column(name="email", length = 255, nullable = false, unique = false)
+    @Column(name="email", length = 50, nullable = false, unique = false)
     private String email;
 
     @Column(name="password", length = 255, nullable = false, unique = false)
     private String password;
 
-    @Column(name="firstname", length = 255, nullable = true, unique = false)
-    private String firstname;
+    @Column(name="firstName", length = 100, nullable = true, unique = false)
+    private String firstName;
 
-    @Column(name="lastname", length = 255, nullable = true, unique = false)
-    private String lastname;
+    @Column(name="lastName", length = 100, nullable = true, unique = false)
+    private String lastName;
 
     @Column(name="created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    public User(String username, String email, String password) {
-        this.username = username;
+    public User(String userName, String email, String password) {
+        this.userName = userName;
         this.email = email;
         this.password = password;
     }

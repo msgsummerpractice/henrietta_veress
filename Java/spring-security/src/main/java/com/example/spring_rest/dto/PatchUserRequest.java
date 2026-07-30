@@ -1,7 +1,6 @@
 package com.example.spring_rest.dto;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,21 +11,18 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateUserRequest {
-    @NotBlank
+public class PatchUserRequest {
+
     @Size(min = 3, max = 50)
     private String userName;
 
-    @NotBlank
     @Email(message = "Email not valid")
     @Size(min = 1, max = 50)
     private String email;
 
-    @NotBlank
     @Size(min = 2, max = 100)
     private String firstName;
 
-    @NotBlank
     @Size(min = 2, max = 100)
     private String lastName;
 }

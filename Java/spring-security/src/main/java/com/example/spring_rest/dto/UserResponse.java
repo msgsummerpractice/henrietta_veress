@@ -15,8 +15,8 @@ public class UserResponse {
     private Long id;
     private String username;
     private String email;
-    private String firstname;
-    private String lastname;
+    private String firstName;
+    private String lastName;
     private LocalDateTime createdAt;
     // NO password field - security!
     

@@ -14,18 +14,20 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserRequest {
     @NotBlank(message = "Username is required")
-    private String username;
+    @Size(min = 3, max = 50)
+    private String userName;
     
     @Email(message = "Email must be valid")
+    @Size(min = 1, max = 50)
     private String email;
     
     @NotBlank(message = "Password is required")
-    @Size(min = 8, message = "Password must be at least 8 characters")
+    @Size(min = 8, max = 255, message = "Password must be at least 8 characters")
     private String password;
 
-    @Size(max = 150, message = "Firstname can be maximum 150 characters")
-    private String firstname;
+    @Size(min = 2, max = 100, message = "FirstName can be maximum 255 characters")
+    private String firstName;
 
-    @Size(max = 150, message = "Lastname can be maximum 150 characters")
-    private String lastname;
+    @Size(min = 2, max = 100, message = "LastName can be maximum 255 characters")
+    private String lastName;
 }

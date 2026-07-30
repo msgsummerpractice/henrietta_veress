@@ -2,6 +2,8 @@ package com.example.spring_rest.dto;
 
 import java.util.Set;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,7 +28,8 @@ public class UpdateUserRequestTest {
         UpdateUserRequest request = new UpdateUserRequest(
                 "user1", "johndoe@example.com", "John", "Doe");
         Set<ConstraintViolation<UpdateUserRequest>> violations = validator.validate(request);
-        assert violations.isEmpty();
+        
+        assertThat(violations).isEmpty();
     }
 
     @Test
@@ -35,6 +38,11 @@ public class UpdateUserRequestTest {
                 "user1", "invalid email", "John", "Doe"
         );
         Set<ConstraintViolation<UpdateUserRequest>> violations = validator.validate(request);
-        assert !violations.isEmpty();
+
+        assertThat(violations)
+            .hasSize(1)
+            .first()
+            .extracting(v -> v.getPropertyPath().toString())
+            .isEqualTo("email");
     }
 }

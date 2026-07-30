@@ -7,8 +7,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.example.spring_rest.dto.PatchUserRequest;
 import com.example.spring_rest.dto.UpdateUserRequest;
 import com.example.spring_rest.dto.UserRequest;
 import com.example.spring_rest.dto.UserResponse;
@@ -17,6 +20,9 @@ import com.example.spring_rest.model.Role;
 import com.example.spring_rest.model.User;
 import com.example.spring_rest.repository.IRoleRepository;
 import com.example.spring_rest.repository.IUserRepository;
+
+import org.springframework.transaction.annotation.Transactional;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 
@@ -35,17 +41,22 @@ public class UserService {
     }
 
     public UserResponse createUser(UserRequest request) {
+
+        if (userRepository.existsByUserName(request.getUserName())) {
+            throw new IllegalArgumentException("Username taken: " + request.getUserName());
+        }
+
         // Convert DTO to Entity
         User user = new User(); 
-        user.setUsername(request.getUsername()); 
+        user.setUserName(request.getUserName()); 
         user.setEmail(request.getEmail());
-        user.setFirstname(request.getFirstname());
-        user.setLastname(request.getLastname());  
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());  
         user.setPassword(encryptPassword(request.getPassword()));
         user.setCreatedAt(LocalDateTime.now());
 
         Role userRole = roleRepository.findByName("USER")
-                                      .orElseThrow(() -> new ResourceNotFoundException("USER role not found"));
+                                      .orElseThrow(() -> new IllegalStateException("USER role not found, check database"));
 
         user.setRoles(Set.of(userRole));
 
@@ -56,8 +67,8 @@ public class UserService {
         return convertToResponse(savedUser);
     }
 
-    public List<UserResponse> getAllUsers() {
-        List<User> users = userRepository.findAll();
+    public List<UserResponse> getAllUsers(Pageable pageable) {
+        Page<User> users = userRepository.findAll(pageable);
 
         return users.stream()
                 .map(this::convertToResponse)
@@ -65,6 +76,7 @@ public class UserService {
     }
     
 
+    @Transactional(readOnly = true)
     public UserResponse getUserById(Long id) {
         User user = userRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("User not found with this id: " + id));
@@ -73,46 +85,52 @@ public class UserService {
         return convertToResponse(user);
     }
 
-    public Optional<UserResponse> getUserByUsername(String username) {
-        return userRepository.findByUsername(username).map(this::convertToResponse);
+    public Optional<UserResponse> getUserByUserName(String userName) {
+        return userRepository.findByUsername(userName).map(this::convertToResponse);
     }
 
     public Optional<UserResponse> getUserByEmail(String email) {
         return userRepository.findByEmail(email).map(this::convertToResponse);
     }
 
+    @Transactional
     public UserResponse updateUser(Long id, UpdateUserRequest updateRequest) {
         User currentUser = userRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("User not found with this id: " + id));
 
-        currentUser.setUsername(updateRequest.getUsername());
+        currentUser.setUserName(updateRequest.getUserName());
         currentUser.setEmail(updateRequest.getEmail());
-        currentUser.setFirstname(updateRequest.getFirstname());
-        currentUser.setLastname(updateRequest.getLastname());
+        currentUser.setFirstName(updateRequest.getFirstName());
+        currentUser.setLastName(updateRequest.getLastName());
 
         User updatedUser = userRepository.save(currentUser);
         return convertToResponse(updatedUser);
     }
 
+    @Transactional
     public void deleteUser(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new ResourceNotFoundException("User not found with this id: " + id);
+        }
         userRepository.deleteById(id);
     }
 
-    public UserResponse partialUpdateUser(Long id, UpdateUserRequest updateRequest) {
+    @Transactional
+    public UserResponse partialUpdateUser(Long id, PatchUserRequest patchRequest) {
         User currentUser = userRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("User not found with this id: " + id));
         
-        if (updateRequest.getUsername() != null) {
-            currentUser.setUsername(updateRequest.getUsername());
+        if (patchRequest.getUserName() != null) {
+            currentUser.setUserName(patchRequest.getUserName());
         }
-        if (updateRequest.getEmail() != null) {
-            currentUser.setEmail(updateRequest.getEmail());
+        if (patchRequest.getEmail() != null) {
+            currentUser.setEmail(patchRequest.getEmail());
         }
-        if (updateRequest.getFirstname() != null) {
-            currentUser.setFirstname(updateRequest.getFirstname());
+        if (patchRequest.getFirstName() != null) {
+            currentUser.setFirstName(patchRequest.getFirstName());
         }
-        if (updateRequest.getLastname() != null) {
-            currentUser.setLastname(updateRequest.getLastname());
+        if (patchRequest.getLastName() != null) {
+            currentUser.setLastName(patchRequest.getLastName());
         }
 
         User updatedUser = userRepository.save(currentUser);
@@ -123,10 +141,10 @@ public class UserService {
     private UserResponse convertToResponse(User user) {
         UserResponse response = new UserResponse();
         response.setId(user.getId());
-        response.setUsername(user.getUsername());
+        response.setUsername(user.getUserName());
         response.setEmail(user.getEmail());
-        response.setFirstname(user.getFirstname());
-        response.setLastname(user.getLastname());
+        response.setFirstName(user.getFirstName());
+        response.setLastName(user.getLastName());
         response.setCreatedAt(user.getCreatedAt());
         // Notice: password and internalNotes are NOT included
         return response;
