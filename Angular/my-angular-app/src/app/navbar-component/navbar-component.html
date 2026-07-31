@@ -1,12 +1,30 @@
 <mat-toolbar color="primary" class="fixed top-0 left-0 right-0 z-50 shadow-md">
-  <span class="flex items-center font-bold text-xl tracking-wide">
-        <mat-icon class="mr-2">pets</mat-icon>
-        Doogoo
+  <span class="flex items-center font-bold text-3xl tracking-wide">
+    <mat-icon class="mr-2">pets</mat-icon>
+    Doogoo
   </span>
-  <div class="hidden md:flex space-x-4 ml-8">
-    <button mat-button color="primary" routerLink="/home" >Home</button>
-    <button mat-button color="primary" routerLink="/breeds">Breeds</button>
-    <button mat-button color="primary" routerLink="/gallery">Gallery</button>
+  <div class="hidden md:flex h-full items-center gap-7 ml-15 justify-self-center">
+    <a
+      routerLink="/home"
+      routerLinkActive="!text-[var(--mat-sys-primary)] !font-bold"
+      class="inline-flex items-center text-lg"
+    >
+      Home
+    </a>
+    <a
+      routerLink="/breeds"
+      routerLinkActive="!text-[var(--mat-sys-primary)] !font-bold"
+      class="inline-flex items-center text-lg"
+    >
+      Breeds
+    </a>
+    <a
+      routerLink="/gallery"
+      routerLinkActive="!text-[var(--mat-sys-primary)] !font-bold"
+      class="inline-flex items-center text-lg"
+    >
+      Gallery
+    </a>
   </div>
 
   <span class="flex-grow"></span>
@@ -15,11 +33,10 @@
     <button mat-icon-button aria-label="Search">
       <mat-icon>search</mat-icon>
     </button>
-    
+
     <button mat-flat-button class="ml-2" routerLink="/login">
       <mat-icon class="mr-1">login</mat-icon>
       <span class="hidden sm:inline">Log in</span>
     </button>
-
   </div>
 </mat-toolbar>
