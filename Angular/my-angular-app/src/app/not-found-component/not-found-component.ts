@@ -7,6 +7,5 @@ import { MatIconModule } from '@angular/material/icon';
   selector: 'NotFoundPage',
   imports: [RouterLink, MatAnchor, MatIconModule],
   templateUrl: './not-found-component.html',
-  styleUrl: './not-found-component.css',
 })
 export class NotFoundComponent {}

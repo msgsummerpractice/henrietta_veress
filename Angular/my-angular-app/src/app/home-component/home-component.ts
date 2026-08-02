@@ -10,7 +10,6 @@ import { DogService } from './dog-service';
   selector: 'Home',
   imports: [MatButton, MatToolbarModule, WordCountPipe, App],
   templateUrl: './home-component.html',
-  styleUrl: './home-component.css',
   providers: [DogService],
 })
 export class HomeComponent {
