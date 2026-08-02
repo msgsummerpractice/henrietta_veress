@@ -2,6 +2,8 @@ import { Component, signal } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { HttpClient } from '@angular/common/http';
+import { WordCountPipe } from '../pipes/word-count-pipe';
+import { App } from "../app";
 
 type DogResponse = {
   message: string;
@@ -16,7 +18,7 @@ type DogCard = {
 
 @Component({
   selector: 'Home',
-  imports: [MatButton, MatToolbarModule],
+  imports: [MatButton, MatToolbarModule, WordCountPipe, App],
   templateUrl: './home-component.html',
   styleUrl: './home-component.css',
 })
