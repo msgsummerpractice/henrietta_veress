@@ -25,10 +25,15 @@
           class="bg-white border border-gray-200 rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow"
         >
           <div class="w-full h-80 bg-gray-200 rounded-md mb-2 flex items-center justify-center">
-            @if (dogos()[0].imageUrl) {
-              <img [src]="dogos()[0].imageUrl" [alt]="dogos()[0].name" class="w-full h-80 object-cover rounded-md mb-2" />
-            } @else {
+            @if (dogos()[0].status === 'loading') {
               <span class="text-gray-400 text-sm">Loading...</span>
+            } @else if (dogos()[0].status === 'loaded') {
+                <img [src]="dogos()[0].imageUrl" 
+                [alt]="dogos()[0].name" 
+                class="w-full h-80 object-cover rounded-md mb-2" 
+                />
+            } @else if (dogos()[0].status === 'error') {
+                <span class="text-red-500 text-sm">Failed to load image.</span>
             }
           </div>
           <h2 class="sm:text-2xl font-bold text-gray-900 mb-2 mt-1">Labrador</h2>
@@ -41,10 +46,15 @@
           class="bg-white border border-gray-200 rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow"
         > 
           <div class="w-full h-80 bg-gray-200 rounded-md mb-2 flex items-center justify-center">
-            @if (dogos()[1].imageUrl) {
-              <img [src]="dogos()[1].imageUrl" [alt]="dogos()[1].name" class="w-full h-80 object-cover rounded-md mb-2" />
-            } @else {
+            @if (dogos()[1].status === 'loading') {
               <span class="text-gray-400 text-sm">Loading...</span>
+            } @else if (dogos()[1].status === 'loaded') {
+                <img [src]="dogos()[1].imageUrl" 
+                [alt]="dogos()[1].name" 
+                class="w-full h-80 object-cover rounded-md mb-2" 
+                />
+            } @else if (dogos()[1].status === 'error') {
+                <span class="text-red-500 text-sm">Failed to load image.</span>
             }
           </div>
           <h2 class="sm:text-2xl font-bold text-gray-900 mb-2 mt-1">Vizsla</h2>
@@ -57,10 +67,15 @@
           class="bg-white border border-gray-200 rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow"
         >
           <div class="w-full h-80 bg-gray-200 rounded-md mb-2 flex items-center justify-center">
-            @if (dogos()[2].imageUrl) {
-              <img [src]="dogos()[2].imageUrl" [alt]="dogos()[2].name" class="w-full h-80 object-cover rounded-md mb-2" />
-            } @else {
+            @if (dogos()[2].status === 'loading') {
               <span class="text-gray-400 text-sm">Loading...</span>
+            } @else if (dogos()[2].status === 'loaded') {
+                <img [src]="dogos()[2].imageUrl" 
+                [alt]="dogos()[2].name" 
+                class="w-full h-80 object-cover rounded-md mb-2" 
+                />
+            } @else if (dogos()[2].status === 'error') {
+                <span class="text-red-500 text-sm">Failed to load image.</span>
             }
           </div>
           <h2 class="sm:text-2xl font-bold text-gray-900 mb-2 mt-1">Akita</h2>
@@ -68,8 +83,6 @@
             {{ dogos()[2].description }}
           </p>
         </article>
-
-
       </main>
 
       <div class="text-center mt-8">

@@ -14,58 +14,121 @@ type DogCard = {
   name: string;
   description: string;
   imageUrl:string;
+  status: 'loading' | 'loaded' | 'error';
 }
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, MatButton, Navbar, MatToolbar, MatToolbarModule],
+  imports: [CommonModule, MatButton, Navbar, MatToolbarModule],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
 export class App {
 
   dogos = signal<DogCard[]>([
-      { name: 'Labrador', description: 'They are really friendly, great family dog. Intelligent fluffballs.', imageUrl: '' },
-      { name: 'Vizsla', description: 'Beautiful loyal doggo.', imageUrl: '' },
-      { name: 'Akita', description: 'A bit sassy, but extremely loyal to his owner.', imageUrl: '' },
+      { 
+        name: 'Labrador', 
+        description: 'They are really friendly, great family dog. Intelligent fluffballs.', 
+        imageUrl: '', 
+        status: 'loading' 
+      },
+      { 
+        name: 'Vizsla', 
+        description: 'Beautiful loyal doggo.', 
+        imageUrl: '', 
+        status: 'loading' 
+      },
+      { 
+        name: 'Akita', 
+        description: 'A bit sassy, but extremely loyal to his owner.', 
+        imageUrl: '', 
+        status: 'loading' 
+      },
     ]);
 
   constructor(private http: HttpClient) {}
-
-  ngOnInit(): void {
-    this.fetchDogPics();
-  }
 
   fetchDogPics(): void {
 
     this.http.get<DogResponse>('https://dog.ceo/api/breed/labrador/images/random')
       .subscribe({
-        next: (response) => {
-          const dogs = this.dogos();
-          dogs[0].imageUrl = response.message;
-          this.dogos.set([...dogs]);
+         next: (response) => {
+          this.dogos.update(list =>
+            list.map(dog =>
+              dog.name === 'Labrador'
+                ? { ...dog, imageUrl: response.message, status: 'loaded' }
+                : dog
+            )
+          );
         },
-        error: (err) => console.error('Labrador fetch failed:', err),
+        error: (err) => {
+          console.error('Labrador fetch failed:', err);
+
+          this.dogos.update(list =>
+            list.map(dog =>
+              dog.name === 'Labrador'
+                ? {
+                    ...dog,
+                    status: 'error'
+                  }
+                : dog
+            )
+          );
+        },
       });
 
     this.http.get<DogResponse>('https://dog.ceo/api/breed/vizsla/images/random')
       .subscribe({
         next: (response) => {
-          const dogs = this.dogos();
-          dogs[1].imageUrl = response.message;
-          this.dogos.set([...dogs]);
+          this.dogos.update(list =>
+            list.map(dog =>
+              dog.name === 'Vizsla'
+                ? { ...dog, imageUrl: response.message, status: 'loaded' }
+                : dog
+            )
+          );
         },
-        error: (err) => console.error('Vizsla fetch failed:', err),
+        error: (err) => {
+          console.error('Vizsla fetch failed:', err);
+
+          this.dogos.update(list =>
+            list.map(dog =>
+              dog.name === 'Vizsla'
+                ? {
+                    ...dog,
+                    status: 'error'
+                  }
+                : dog
+            )
+          );
+        },
       });
 
     this.http.get<DogResponse>('https://dog.ceo/api/breed/akita/images/random')
      .subscribe({
         next: (response) => {
-          const dogs = this.dogos();
-          dogs[2].imageUrl = response.message;
-          this.dogos.set([...dogs]);
+          this.dogos.update(list =>
+            list.map(dog =>
+              dog.name === 'Akita'
+                ? { ...dog, imageUrl: response.message, status: 'loaded' }
+                : dog
+            )
+          );
         },
-        error: (err) => console.error('Akita fetch failed:', err),
+        error: (err) => {
+          console.error('Akita fetch failed:', err);
+
+          this.dogos.update(list =>
+            list.map(dog =>
+              dog.name === 'Akita'
+                ? {
+                    ...dog,
+                    status: 'error'
+                  }
+                : dog
+            )
+          );
+        },
       });
   }
    onButtonClick(): void {
