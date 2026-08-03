@@ -33,29 +33,29 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="userName", length = 50, nullable = false, unique = false)
-    private String userName;
+    @Column(name="username", length = 50, nullable = false, unique = true)
+    private String username;
 
-    @Column(name="email", length = 50, nullable = false, unique = false)
+    @Column(name="email", length = 50, nullable = false, unique = true)
     private String email;
 
     @Column(name="password", length = 255, nullable = false, unique = false)
     private String password;
 
-    @Column(name="firstName", length = 100, nullable = true, unique = false)
+    @Column(name="firstName", length = 100, nullable = false, unique = false)
     private String firstName;
 
-    @Column(name="lastName", length = 100, nullable = true, unique = false)
+    @Column(name="lastName", length = 100, nullable = false, unique = false)
     private String lastName;
 
     @Column(name="created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    public User(String userName, String email, String password) {
-        this.userName = userName;
+    public User(String username, String email, String password) {
+        this.username = username;
         this.email = email;
         this.password = password;
     }

@@ -1,9 +1,6 @@
 package com.example.spring_rest.dto;
 
 import java.time.LocalDateTime;
-import java.util.Set;
-
-import com.example.spring_rest.model.Role;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

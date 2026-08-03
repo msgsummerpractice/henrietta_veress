@@ -1,11 +1,16 @@
 package com.example.spring_rest.dto;
 
-public class MfaVerifyRequest {
-    private String userName;
-    private String code;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-    public String getUserName() { return userName; }
-    public void setUserName(String userName) { this.userName = userName; }
-    public String getCode() { return code; }
-    public void setCode(String code) { this.code = code; }
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class MfaVerifyRequest {
+    
+    private String email;
+    private String code;
 }

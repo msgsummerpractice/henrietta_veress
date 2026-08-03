@@ -1,5 +1,6 @@
 package com.example.spring_rest.service;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
@@ -51,17 +52,17 @@ public class AuthService implements IAuthService {
     }
 
     private SecretKey getKey() {
-        return Keys.hmacShaKeyFor(jwtSecret.getBytes());
+        return Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
     }
 
     @Override
     public SignInResponse login(SignInRequest request) {
 
         authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(request.getUserName(), request.getPassword())
+            new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
 
-        User user = userRepository.findByUserName(request.getUserName())
+        User user = userRepository.findByEmail(request.getEmail())
             .orElseThrow(() -> new RuntimeException("User not found"));
 
         List<String> roleNames = user.getRoles().stream()
@@ -69,7 +70,7 @@ public class AuthService implements IAuthService {
             .collect(Collectors.toList());
 
         String token = Jwts.builder()
-            .subject(user.getUserName())
+            .subject(user.getEmail())
             .claim("roles", roleNames)
             .issuedAt(new Date())
             .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
@@ -82,12 +83,16 @@ public class AuthService implements IAuthService {
     @Override
     public User register(RegisterRequest request) {
         
-        if (userRepository.findByUserName(request.getUserName()).isPresent()) {
+        if (userRepository.findByUsername(request.getUsername()).isPresent()) {
             throw new RuntimeException("Username is taken");
         }
 
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new RuntimeException("Email is taken");
+        }
+
         User user = new User();
-        user.setUserName(request.getUserName());
+        user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setFirstName(request.getFirstName());
@@ -106,12 +111,12 @@ public class AuthService implements IAuthService {
 
     @Override
     public SignInResponse verifyMfa(MfaVerifyRequest request) {
-        boolean valid = mfaService.verifyCode(request.getUserName(), request.getCode());
+        boolean valid = mfaService.verifyCode(request.getEmail(), request.getCode());
         if (!valid) {
             throw new RuntimeException("Ervenytelen vagy lejart MFA kod");
         }
 
-        User user = userRepository.findByUserName(request.getUserName())
+        User user = userRepository.findByEmail(request.getEmail())
             .orElseThrow(() -> new RuntimeException("User not found"));
 
         List<String> roleNames = user.getRoles().stream()
@@ -119,7 +124,7 @@ public class AuthService implements IAuthService {
             .collect(Collectors.toList());
 
         String token = Jwts.builder()
-            .subject(user.getUserName())
+            .subject(user.getEmail())
             .claim("roles", roleNames)
             .issuedAt(new Date())
             .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))

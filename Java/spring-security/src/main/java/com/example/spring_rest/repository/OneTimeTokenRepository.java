@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface OneTimeTokenRepository extends JpaRepository<OneTimeToken, Long> {
     
-    Optional<OneTimeToken> findByUsernameAndCodeAndUsedFalse(String username, String code);
+    Optional<OneTimeToken> findByEmailAndCodeAndUsedFalse(String email, String code);
 }

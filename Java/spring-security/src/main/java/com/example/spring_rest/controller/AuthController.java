@@ -38,7 +38,7 @@ public class AuthController {
 
         UserResponse response = new UserResponse(
             createdUser.getId(),
-            createdUser.getUserName(),
+            createdUser.getUsername(),
             createdUser.getEmail(),
             createdUser.getFirstName(),
             createdUser.getLastName(),

@@ -42,13 +42,17 @@ public class UserService {
 
     public UserResponse createUser(UserRequest request) {
 
-        if (userRepository.existsByUserName(request.getUserName())) {
-            throw new IllegalArgumentException("Username taken: " + request.getUserName());
+        if (userRepository.existsByUsername(request.getUsername())) {
+            throw new IllegalArgumentException("Username taken: " + request.getUsername());
+        }
+
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new IllegalArgumentException("Email already registered: " + request.getEmail());
         }
 
         // Convert DTO to Entity
         User user = new User(); 
-        user.setUserName(request.getUserName()); 
+        user.setUsername(request.getUsername()); 
         user.setEmail(request.getEmail());
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());  
@@ -85,8 +89,8 @@ public class UserService {
         return convertToResponse(user);
     }
 
-    public Optional<UserResponse> getUserByUserName(String userName) {
-        return userRepository.findByUserName(userName).map(this::convertToResponse);
+    public Optional<UserResponse> getUserByUsername(String userName) {
+        return userRepository.findByUsername(userName).map(this::convertToResponse);
     }
 
     public Optional<UserResponse> getUserByEmail(String email) {
@@ -98,7 +102,7 @@ public class UserService {
         User currentUser = userRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("User not found with this id: " + id));
 
-        currentUser.setUserName(updateRequest.getUserName());
+        currentUser.setUsername(updateRequest.getUsername());
         currentUser.setEmail(updateRequest.getEmail());
         currentUser.setFirstName(updateRequest.getFirstName());
         currentUser.setLastName(updateRequest.getLastName());
@@ -120,8 +124,8 @@ public class UserService {
         User currentUser = userRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("User not found with this id: " + id));
         
-        if (patchRequest.getUserName() != null) {
-            currentUser.setUserName(patchRequest.getUserName());
+        if (patchRequest.getUsername() != null) {
+            currentUser.setUsername(patchRequest.getUsername());
         }
         if (patchRequest.getEmail() != null) {
             currentUser.setEmail(patchRequest.getEmail());
@@ -141,7 +145,7 @@ public class UserService {
     private UserResponse convertToResponse(User user) {
         UserResponse response = new UserResponse();
         response.setId(user.getId());
-        response.setUsername(user.getUserName());
+        response.setUsername(user.getUsername());
         response.setEmail(user.getEmail());
         response.setFirstName(user.getFirstName());
         response.setLastName(user.getLastName());

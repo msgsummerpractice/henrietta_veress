@@ -23,8 +23,8 @@ public class OneTimeToken {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String username;
+    @Column(length = 50, nullable = false, unique = true)
+    private String email;
 
     @Column(nullable = false)
     private String code;
