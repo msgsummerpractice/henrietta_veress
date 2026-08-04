@@ -28,8 +28,8 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<SignInResponse> login(@Valid @RequestBody SignInRequest request) {
-
-        return ResponseEntity.ok(authService.login(request));
+        SignInResponse response = authService.login(request);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/register")

@@ -20,6 +20,7 @@ import com.example.spring_rest.dto.RegisterRequest;
 import com.example.spring_rest.dto.SignInRequest;
 import com.example.spring_rest.dto.SignInResponse;
 import com.example.spring_rest.dto.UserResponse;
+import com.example.spring_rest.mapper.UserMapper;
 import com.example.spring_rest.model.Role;
 import com.example.spring_rest.model.User;
 import com.example.spring_rest.repository.IRoleRepository;
@@ -36,19 +37,21 @@ public class AuthService implements IAuthService {
     private final IUserRepository userRepository;
     private final IRoleRepository roleRepository;
     private final SecurityConfig securityConfig;
-    private final MfaService mfaService;   
+    private final MfaService mfaService;
+    private final UserMapper userMapper;   
     
     @Value("${jwt.secret}")
     private String jwtSecret;
 
     public AuthService(AuthenticationManager authenticationManager, IUserRepository userRepository, 
                         IRoleRepository roleRepository, SecurityConfig securityConfig,
-                        MfaService mfaService) {
+                        MfaService mfaService, UserMapper userMapper) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.securityConfig = securityConfig;
         this.mfaService = mfaService;
+        this.userMapper = userMapper;
     }
 
     private SecretKey getKey() {
@@ -91,13 +94,8 @@ public class AuthService implements IAuthService {
             throw new RuntimeException("Email is taken");
         }
 
-        User user = new User();
-        user.setUsername(request.getUsername());
-        user.setEmail(request.getEmail());
+        User user = userMapper.toEntity(request);
         user.setPassword(securityConfig.passwordEncoder().encode(request.getPassword()));
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setCreatedAt(LocalDateTime.now());
 
         Role userRole = roleRepository.findByName("USER")
             .orElseThrow(() -> new RuntimeException("No USER role in the database"));
@@ -106,17 +104,9 @@ public class AuthService implements IAuthService {
         roles.add(userRole);
         user.setRoles(roles);
 
-        // persist the new user and return a safe DTO (no password)
         User saved = userRepository.save(user);
 
-        return new UserResponse(
-            saved.getId(),
-            saved.getUsername(),
-            saved.getEmail(),
-            saved.getFirstName(),
-            saved.getLastName(),
-            saved.getCreatedAt()
-        );
+        return userMapper.toResponse(saved);
     }
 
     @Override
