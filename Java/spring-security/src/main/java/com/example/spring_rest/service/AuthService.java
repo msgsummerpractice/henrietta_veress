@@ -13,13 +13,13 @@ import javax.crypto.SecretKey;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import com.example.spring_rest.security.MfaService;
-
+import com.example.spring_rest.config.SecurityConfig;
 import com.example.spring_rest.dto.MfaVerifyRequest;
 import com.example.spring_rest.dto.RegisterRequest;
 import com.example.spring_rest.dto.SignInRequest;
 import com.example.spring_rest.dto.SignInResponse;
+import com.example.spring_rest.dto.UserResponse;
 import com.example.spring_rest.model.Role;
 import com.example.spring_rest.model.User;
 import com.example.spring_rest.repository.IRoleRepository;
@@ -35,19 +35,19 @@ public class AuthService implements IAuthService {
     private final AuthenticationManager authenticationManager;
     private final IUserRepository userRepository;
     private final IRoleRepository roleRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final SecurityConfig securityConfig;
     private final MfaService mfaService;   
     
     @Value("${jwt.secret}")
     private String jwtSecret;
 
     public AuthService(AuthenticationManager authenticationManager, IUserRepository userRepository, 
-                        IRoleRepository roleRepository, PasswordEncoder passwordEncoder,
+                        IRoleRepository roleRepository, SecurityConfig securityConfig,
                         MfaService mfaService) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-        this.passwordEncoder = passwordEncoder;
+        this.securityConfig = securityConfig;
         this.mfaService = mfaService;
     }
 
@@ -81,7 +81,7 @@ public class AuthService implements IAuthService {
     }
 
     @Override
-    public User register(RegisterRequest request) {
+    public UserResponse register(RegisterRequest request) {
         
         if (userRepository.findByUsername(request.getUsername()).isPresent()) {
             throw new RuntimeException("Username is taken");
@@ -94,7 +94,7 @@ public class AuthService implements IAuthService {
         User user = new User();
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setPassword(securityConfig.passwordEncoder().encode(request.getPassword()));
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setCreatedAt(LocalDateTime.now());
@@ -106,7 +106,17 @@ public class AuthService implements IAuthService {
         roles.add(userRole);
         user.setRoles(roles);
 
-        return userRepository.save(user);
+        // persist the new user and return a safe DTO (no password)
+        User saved = userRepository.save(user);
+
+        return new UserResponse(
+            saved.getId(),
+            saved.getUsername(),
+            saved.getEmail(),
+            saved.getFirstName(),
+            saved.getLastName(),
+            saved.getCreatedAt()
+        );
     }
 
     @Override

@@ -12,7 +12,6 @@ import com.example.spring_rest.dto.RegisterRequest;
 import com.example.spring_rest.dto.SignInRequest;
 import com.example.spring_rest.dto.SignInResponse;
 import com.example.spring_rest.dto.UserResponse;
-import com.example.spring_rest.model.User;
 import com.example.spring_rest.service.AuthService;
 
 import jakarta.validation.Valid;
@@ -28,28 +27,19 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public SignInResponse login(@Valid @RequestBody SignInRequest request) {
-        return authService.login(request);
+    public ResponseEntity<SignInResponse> login(@Valid @RequestBody SignInRequest request) {
+
+        return ResponseEntity.ok(authService.login(request));
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponse> register(@RequestBody RegisterRequest request) {
-         User createdUser = authService.register(request);
-
-        UserResponse response = new UserResponse(
-            createdUser.getId(),
-            createdUser.getUsername(),
-            createdUser.getEmail(),
-            createdUser.getFirstName(),
-            createdUser.getLastName(),
-            createdUser.getCreatedAt()
-        );
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    public ResponseEntity<UserResponse> register(@Valid @RequestBody RegisterRequest request) {
+        UserResponse createdUser = authService.register(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
     @PostMapping("/verify-mfa")
-        public SignInResponse verifyMfa(@RequestBody MfaVerifyRequest request) {
-            return authService.verifyMfa(request);
+    public ResponseEntity<SignInResponse> verifyMfa(@Valid @RequestBody MfaVerifyRequest request) {
+        return ResponseEntity.ok(authService.verifyMfa(request));
     }
 }
