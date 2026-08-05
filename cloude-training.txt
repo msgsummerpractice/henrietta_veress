@@ -1,0 +1,7 @@
+Cloud Training, Day 2
+
+- Created an Azure Static Web App and connected it with my frontend GitHub repository.
+- Configured a custom domain for the Static Web App.
+- Configured routing rules in staticwebapp.config.json:
+  - Added navigation fallback for Angular client-side routing.
+  - Added route handling rules for the application.
