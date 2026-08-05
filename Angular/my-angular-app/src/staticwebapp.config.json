@@ -1,0 +1,28 @@
+{
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": [
+      "/assets/*",
+      "/*.css",
+      "/*.js",
+      "/*.png",
+      "/*.jpg",
+      "/*.svg",
+      "/*.ico"
+    ]
+  },
+  "routes": [
+    {
+      "route": "/login",
+      "serve": "/index.html"
+    },
+    {
+      "route": "/home",
+      "serve": "/index.html"
+    },
+    {
+      "route": "/notfound",
+      "serve": "/index.html"
+    }
+  ]
+}
