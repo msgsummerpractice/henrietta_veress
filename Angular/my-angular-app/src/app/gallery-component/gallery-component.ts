@@ -1,18 +1,20 @@
 import { Component, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
-import { RouterLink } from '@angular/router';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { WordCountPipe } from '../pipes/word-count-pipe';
 import { App } from '../app';
-import { DogService } from './dog-service';
+import { DogService } from '../home-component/dog-service';
 
 @Component({
-  selector: 'Home',
-  imports: [MatButton, RouterLink, WordCountPipe],
-  templateUrl: './home-component.html',
+  selector: 'app-gallery',
+  imports: [MatButton, MatToolbarModule, WordCountPipe],
+  templateUrl: './gallery-component.html',
+  styleUrl: './gallery-component.css',
   providers: [DogService],
 })
-export class HomeComponent {
+export class GalleryComponent {
   private readonly dogService = inject(DogService);
+
   dogos = this.dogService.dogos;
 
   onButtonClick(): void {
