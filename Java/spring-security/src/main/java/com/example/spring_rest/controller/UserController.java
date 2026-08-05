@@ -29,9 +29,9 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/api/users", produces = {
-            MediaType.APPLICATION_JSON_VALUE,
-            MediaType.APPLICATION_XML_VALUE
-    })
+        MediaType.APPLICATION_JSON_VALUE,
+        MediaType.APPLICATION_XML_VALUE
+})
 @Validated
 public class UserController {
 
@@ -43,8 +43,8 @@ public class UserController {
 
     @GetMapping()
     public ResponseEntity<List<UserResponse>> getAllUsers(
-        @RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
         List<UserResponse> users = userService.getAllUsers(pageable);
@@ -64,21 +64,22 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @Valid @RequestBody UpdateUserRequest request) {
+    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id,
+            @Valid @RequestBody UpdateUserRequest request) {
         UserResponse response = userService.updateUser(id, request);
         return ResponseEntity.ok(response);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<UserResponse> partialUpdateUser(@PathVariable Long id, @Valid @RequestBody PatchUserRequest request) {
+    public ResponseEntity<UserResponse> partialUpdateUser(@PathVariable Long id,
+            @Valid @RequestBody PatchUserRequest request) {
         UserResponse response = userService.partialUpdateUser(id, request);
         return ResponseEntity.ok(response);
     }
-    
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 }
-

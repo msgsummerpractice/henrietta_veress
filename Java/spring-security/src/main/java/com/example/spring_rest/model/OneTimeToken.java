@@ -18,7 +18,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "one_time_tokens")
 public class OneTimeToken {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -12,13 +12,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserResponse {
+
     private Long id;
     private String username;
     private String email;
     private String firstName;
     private String lastName;
     private LocalDateTime createdAt;
-    // NO password field - security!
-    
-    // Getters and setters
 }

@@ -15,20 +15,21 @@ import java.time.LocalDateTime;
 public class UserMapper {
 
     public UserResponse toResponse(User user) {
-        if (user == null) return null;
+        if (user == null)
+            return null;
 
         return new UserResponse(
-            user.getId(),
-            user.getUsername(),
-            user.getEmail(),
-            user.getFirstName(),
-            user.getLastName(),
-            user.getCreatedAt()
-        );
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getCreatedAt());
     }
 
     public User toEntity(UserRequest request) {
-        if (request == null) return null;
+        if (request == null)
+            return null;
 
         User user = new User();
         user.setUsername(request.getUsername());
@@ -41,7 +42,8 @@ public class UserMapper {
     }
 
     public User toEntity(RegisterRequest request) {
-        if (request == null) return null;
+        if (request == null)
+            return null;
 
         User user = new User();
         user.setUsername(request.getUsername());
@@ -54,7 +56,8 @@ public class UserMapper {
     }
 
     public void updateFromUpdateRequest(User user, UpdateUserRequest req) {
-        if (user == null || req == null) return;
+        if (user == null || req == null)
+            return;
         user.setUsername(req.getUsername());
         user.setEmail(req.getEmail());
         user.setFirstName(req.getFirstName());
@@ -62,10 +65,15 @@ public class UserMapper {
     }
 
     public void patchFromPatchUserRequest(User user, PatchUserRequest req) {
-        if (user == null || req == null) return;
-        if (req.getUsername() != null) user.setUsername(req.getUsername());
-        if (req.getEmail() != null) user.setEmail(req.getEmail());
-        if (req.getFirstName() != null) user.setFirstName(req.getFirstName());
-        if (req.getLastName() != null) user.setLastName(req.getLastName());
+        if (user == null || req == null)
+            return;
+        if (req.getUsername() != null)
+            user.setUsername(req.getUsername());
+        if (req.getEmail() != null)
+            user.setEmail(req.getEmail());
+        if (req.getFirstName() != null)
+            user.setFirstName(req.getFirstName());
+        if (req.getLastName() != null)
+            user.setLastName(req.getLastName());
     }
 }

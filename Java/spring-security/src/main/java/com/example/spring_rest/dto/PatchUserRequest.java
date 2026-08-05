@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PatchUserRequest {
-    
+
     @Size(min = 3, max = 50, message = "Username must be between 3 and 50 characters")
     private String username;
 
@@ -23,6 +23,6 @@ public class PatchUserRequest {
     @Size(min = 2, max = 100, message = "First name must be between 2 and 100 characters")
     private String firstName;
 
-   @Size(min = 2, max = 100, message = "Last name must be between 2 and 100 characters")
+    @Size(min = 2, max = 100, message = "Last name must be between 2 and 100 characters")
     private String lastName;
 }

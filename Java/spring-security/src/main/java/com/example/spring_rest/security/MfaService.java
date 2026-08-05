@@ -33,12 +33,12 @@ public class MfaService {
 
     public boolean verifyCode(String email, String code) {
         return oneTimeTokenRepository.findByEmailAndCodeAndUsedFalse(email, code)
-            .filter(ott -> ott.getExpiresAt().isAfter(LocalDateTime.now()))
-            .map(ott -> {
-                ott.setUsed(true);
-                oneTimeTokenRepository.save(ott);
-                return true;
-            })
-            .orElse(false);
+                .filter(ott -> ott.getExpiresAt().isAfter(LocalDateTime.now()))
+                .map(ott -> {
+                    ott.setUsed(true);
+                    oneTimeTokenRepository.save(ott);
+                    return true;
+                })
+                .orElse(false);
     }
 }

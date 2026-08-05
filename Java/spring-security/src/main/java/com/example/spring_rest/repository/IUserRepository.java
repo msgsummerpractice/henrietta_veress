@@ -10,10 +10,13 @@ import org.springframework.data.jpa.repository.Query;
 import com.example.spring_rest.model.User;
 
 public interface IUserRepository extends JpaRepository<User, Long> {
-    
-    Optional<User> findByUsername(String username);  // -> driver query metodusok
+
+    Optional<User> findByUsername(String username);
+
     Optional<User> findByEmail(String email);
+
     boolean existsByUsername(String username);
+
     boolean existsByEmail(String email);
 
     @Query("SELECT u FROM User u ORDER BY LOWER(u.username) ASC")
