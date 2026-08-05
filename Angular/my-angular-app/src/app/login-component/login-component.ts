@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { MatAnchor, MatButton } from '@angular/material/button';
 import { AuthService } from '../services/auth-service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import {
   FormControl,
   NonNullableFormBuilder,
@@ -18,7 +18,14 @@ type LoginForm = {
 
 @Component({
   selector: 'LoginPage',
-  imports: [MatAnchor, MatButton, ReactiveFormsModule, MatFormFieldModule, MatInputModule],
+  imports: [
+    MatAnchor,
+    MatButton,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    RouterLink,
+  ],
   templateUrl: './login-component.html',
 })
 export class LoginComponent {
