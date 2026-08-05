@@ -11,16 +11,20 @@
             <mat-error>Email is required.</mat-error>
           } @else if (loginFormGroup.controls.email.hasError('email')) {
             <mat-error>Not a valid email format.</mat-error>
+          } @else if (loginFormGroup.controls.email.hasError('maxlength')) {
+            <mat-error>Email must not exceed 50 characters.</mat-error>
           }
         </mat-form-field>
 
         <mat-form-field class="w-full">
           <mat-label>Password</mat-label>
-          <input matInput type="password" formControlName="password"/>
+          <input matInput type="password" formControlName="password" />
           @if (loginFormGroup.controls.password.hasError('required')) {
             <mat-error>Password is required.</mat-error>
           } @else if (loginFormGroup.controls.password.hasError('minlength')) {
-            <mat-error>Password must be at least 6 characters.</mat-error>
+            <mat-error>Password must be at least 8 characters.</mat-error>
+          } @else if (loginFormGroup.controls.password.hasError('maxlength')) {
+            <mat-error>Password must not exceed 255 characters.</mat-error>
           }
         </mat-form-field>
 
