@@ -8,6 +8,8 @@ export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
 
+  private readonly baserUrl = 'https://heni-container-backend.internal.yellowrock-d6ee80d6.westeurope.azurecontainerapps.io/api/auth'
+
   token = signal<string | null>(localStorage.getItem('token'));
   roles = signal<Role[]>(JSON.parse(localStorage.getItem('roles') ?? '[]'));
 
@@ -15,7 +17,7 @@ export class AuthService {
   isAdmin = computed(() => this.roles().some((r) => r.name === 'ADMIN'));
 
   login(request: SignInRequest) {
-    return this.http.post<SignInResponse>('http://localhost:8080/auth/login', request);
+    return this.http.post<SignInResponse>(`${this.baserUrl}/login`, request);
   }
 
   setSession(res: SignInResponse) {
@@ -26,7 +28,7 @@ export class AuthService {
   }
 
   register(request: RegisterRequest) {
-    return this.http.post<UserResponse>('http://localhost:8080/auth/register', request);
+    return this.http.post<UserResponse>(`${this.baserUrl}/register`, request);
   }
 
   logout() {

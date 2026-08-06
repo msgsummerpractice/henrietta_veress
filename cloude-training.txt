@@ -5,3 +5,10 @@ Cloud Training, Day 2
 - Configured routing rules in staticwebapp.config.json:
   - Added navigation fallback for Angular client-side routing.
   - Added route handling rules for the application.
+
+Cloud Training, Day 4
+
+- Created Container Apps for the backend and database. For the backend, I used my Docker image pushed to ACR, 
+and for the database, I used the Postgres image from Docker Hub. 
+- Set up environment variables for both, adjusted min/max replicas, and connected them.
+- Creating Azure Key Vault is in progress
