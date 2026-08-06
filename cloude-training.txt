@@ -5,3 +5,9 @@ Cloud Training, Day 2
 - Configured routing rules in staticwebapp.config.json:
   - Added navigation fallback for Angular client-side routing.
   - Added route handling rules for the application.
+
+Cloud Training, Day 3
+- Created my container registry in Azure
+- Had problems with Docker and WSL setup, but got it resolved
+- Cleaned up my branches, merged everything back into main, now my app is working properly
+- Created a Dockerfile for the backend, built an image from it, tagged it with a version and pushed to my registry
