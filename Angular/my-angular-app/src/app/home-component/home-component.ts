@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { WordCountPipe } from '../pipes/word-count-pipe';
@@ -11,9 +11,13 @@ import { DogService } from './dog-service';
   templateUrl: './home-component.html',
   providers: [DogService],
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   private readonly dogService = inject(DogService);
   dogos = this.dogService.dogos;
+
+   ngOnInit() {
+        this.dogService.fetchDogPics();
+  }
 
   onButtonClick(): void {
     this.dogService.fetchDogPics();

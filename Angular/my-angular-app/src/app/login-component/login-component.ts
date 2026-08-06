@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { MatAnchor, MatButton } from '@angular/material/button';
 import { AuthService } from '../services/auth-service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import {
   FormControl,
   NonNullableFormBuilder,
@@ -10,6 +10,7 @@ import {
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatIcon } from "@angular/material/icon";
 
 type LoginForm = {
   email: FormControl<string>;
@@ -18,7 +19,15 @@ type LoginForm = {
 
 @Component({
   selector: 'LoginPage',
-  imports: [MatAnchor, MatButton, ReactiveFormsModule, MatFormFieldModule, MatInputModule],
+  imports: [
+    MatAnchor,
+    MatButton,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    RouterLink,
+    MatIcon
+],
   templateUrl: './login-component.html',
 })
 export class LoginComponent {

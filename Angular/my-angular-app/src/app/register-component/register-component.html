@@ -1,0 +1,92 @@
+<div class="min-h-screen flex items-center justify-center flex-col gap-15">
+  <div class="bg-fuchsia-100 p-8 rounded-lg shadow-md w-full max-w-md">
+    <h2 class="text-2xl font-bold text-gray-800 mb-1 text-center">New around here?</h2>
+    <p class="text-xl font-bold text-gray-800 mb-6 text-center">Ceate an account :D</p>
+
+    <form novalidate [formGroup]="registerFormGroup" (ngSubmit)="onFormSubmit()">
+      <div class="space-y-4">
+        <mat-form-field class="w-full">
+          <mat-label>Username</mat-label>
+          <input matInput type="text" formControlName="username" />
+          @if (registerFormGroup.controls.username.hasError('required')) {
+            <mat-error>Username is required.</mat-error>
+          } @else if (registerFormGroup.controls.username.hasError('minlength')) {
+            <mat-error>Username must be at least 3 characters.</mat-error>
+          } @else if (registerFormGroup.controls.username.hasError('maxlength')) {
+            <mat-error>Username must not exceed 50 characters.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field class="w-full">
+          <mat-label>First name</mat-label>
+          <input matInput type="text" formControlName="firstName" />
+          @if (registerFormGroup.controls.firstName.hasError('required')) {
+            <mat-error>First name is required.</mat-error>
+          } @else if (registerFormGroup.controls.firstName.hasError('minlength')) {
+            <mat-error>First name must be at least 2 characters.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field class="w-full">
+          <mat-label>Last name</mat-label>
+          <input matInput type="text" formControlName="lastName" />
+          @if (registerFormGroup.controls.lastName.hasError('required')) {
+            <mat-error>Last name is required.</mat-error>
+          } @else if (registerFormGroup.controls.lastName.hasError('minlength')) {
+            <mat-error>Last name must be at least 2 characters.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field class="w-full">
+          <mat-label>Email</mat-label>
+          <input matInput type="text" formControlName="email" placeholder="pat@example.com" />
+          @if (registerFormGroup.controls.email.hasError('required')) {
+            <mat-error>Email is required.</mat-error>
+          } @else if (registerFormGroup.controls.email.hasError('email')) {
+            <mat-error>Not a valid email format.</mat-error>
+          } @else if (registerFormGroup.controls.email.hasError('maxlength')) {
+            <mat-error>Email must not exceed 50 characters.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field class="w-full">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" formControlName="password" />
+          @if (registerFormGroup.controls.password.hasError('required')) {
+            <mat-error>Password is required.</mat-error>
+          } @else if (registerFormGroup.controls.password.hasError('minlength')) {
+            <mat-error>Password must be at least 8 characters.</mat-error>
+          } @else if (registerFormGroup.controls.password.hasError('maxlength')) {
+            <mat-error>Password must not exceed 255 characters.</mat-error>
+          }
+        </mat-form-field>
+
+        @if (errorMessage()) {
+          <p class="text-red-600 text-sm">{{ errorMessage() }}</p>
+        }
+
+        <button
+          mat-flat-button
+          color="primary"
+          type="submit"
+          class="w-full py-2 rounded-lg"
+          [disabled]="registerFormGroup.invalid"
+        >
+          Sign up
+        </button>
+      </div>
+      <p class="text-center text-sm text-gray-600 mt-4">
+        Already have an account?
+        <button routerLink="/login" class="text-fuchsia-700 font-semibold hover:underline">
+          Log in
+        </button>
+      </p>
+    </form>
+  </div>
+  <div>
+    <button matButton="outlined" routerLink="/home" e coloxtended class="flex items-center gap-2">
+      <mat-icon>arrow_back</mat-icon>
+      Back to Home
+    </button>
+  </div>
+</div>
