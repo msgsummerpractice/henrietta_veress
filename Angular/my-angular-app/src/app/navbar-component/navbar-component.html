@@ -2,7 +2,7 @@
   <mat-toolbar color="primary" class="fixed top-0 left-0 right-0 z-50 shadow-md">
     <span class="flex items-center font-bold text-3xl tracking-wide">
       <mat-icon class="mr-2">pets</mat-icon>
-      Doogoo
+      <button routerLink="/home">Doogoo</button>
     </span>
     <div class="hidden md:flex h-full items-center gap-7 ml-15 justify-self-center">
       <a
@@ -39,7 +39,7 @@
         @if (authService.isLoggedIn()) {
           <button mat-flat-button (click)="onLogout()">Logout</button>
         } @else {
-          <a routerLink="/login" mat-stroked-button>Login</a>
+          <a routerLink="/login" mat-stroked-button>Log in</a>
           <a routerLink="/register" mat-flat-button color="primary">Sign Up</a>
         }
       </div>

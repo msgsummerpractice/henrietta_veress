@@ -10,6 +10,7 @@ import { Router, RouterLink } from '@angular/router';
 import { MatButton } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatIcon } from "@angular/material/icon";
 
 type RegisterForm = {
   email: FormControl<string>;
@@ -21,7 +22,7 @@ type RegisterForm = {
 
 @Component({
   selector: 'RegisterPage',
-  imports: [MatButton, ReactiveFormsModule, MatFormFieldModule, MatInputModule, RouterLink],
+  imports: [MatButton, ReactiveFormsModule, MatFormFieldModule, MatInputModule, RouterLink, MatIcon],
   templateUrl: './register-component.html',
   styleUrl: './register-component.css',
 })

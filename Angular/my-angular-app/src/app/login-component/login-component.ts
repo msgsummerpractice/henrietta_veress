@@ -10,6 +10,7 @@ import {
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatIcon } from "@angular/material/icon";
 
 type LoginForm = {
   email: FormControl<string>;
@@ -25,7 +26,8 @@ type LoginForm = {
     MatFormFieldModule,
     MatInputModule,
     RouterLink,
-  ],
+    MatIcon
+],
   templateUrl: './login-component.html',
 })
 export class LoginComponent {
