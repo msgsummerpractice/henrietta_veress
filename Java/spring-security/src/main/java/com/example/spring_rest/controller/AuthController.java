@@ -2,6 +2,7 @@ package com.example.spring_rest.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ import com.example.spring_rest.service.AuthService;
 
 import jakarta.validation.Valid;
 
+@CrossOrigin(origins = "https://brave-tree-013702d10.7.azurestaticapps.net")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
