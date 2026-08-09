@@ -19,6 +19,7 @@ import com.example.spring_rest.exception.ResourceNotFoundException;
 import com.example.spring_rest.mapper.UserMapper;
 import com.example.spring_rest.model.Role;
 import com.example.spring_rest.model.User;
+import com.example.spring_rest.model.enums.RoleName;
 import com.example.spring_rest.repository.IRoleRepository;
 import com.example.spring_rest.repository.IUserRepository;
 
@@ -32,7 +33,7 @@ public class UserService {
     private final SecurityConfig securityConfig;
     private final UserMapper userMapper;
 
-    @Autowired   // -> konstruktor injection
+    @Autowired
     public UserService(IUserRepository userRepository, IRoleRepository roleRepository, 
         SecurityConfig securityConfig, UserMapper userMapper) {
         this.userRepository = userRepository;
@@ -54,7 +55,7 @@ public class UserService {
         User user = userMapper.toEntity(request);
         user.setPassword(securityConfig.passwordEncoder().encode(request.getPassword()));
 
-        Role userRole = roleRepository.findByName("USER")
+        Role userRole = roleRepository.findByName(RoleName.USER)
                                       .orElseThrow(() -> new IllegalStateException("USER role not found, check database"));
 
         user.setRoles(Set.of(userRole));

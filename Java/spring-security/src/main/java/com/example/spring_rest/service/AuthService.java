@@ -1,7 +1,6 @@
 package com.example.spring_rest.service;
 
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -23,6 +22,7 @@ import com.example.spring_rest.dto.UserResponse;
 import com.example.spring_rest.mapper.UserMapper;
 import com.example.spring_rest.model.Role;
 import com.example.spring_rest.model.User;
+import com.example.spring_rest.model.enums.RoleName;
 import com.example.spring_rest.repository.IRoleRepository;
 import com.example.spring_rest.repository.IUserRepository;
 
@@ -68,8 +68,8 @@ public class AuthService implements IAuthService {
         User user = userRepository.findByEmail(request.getEmail())
             .orElseThrow(() -> new RuntimeException("User not found"));
 
-        List<String> roleNames = user.getRoles().stream()
-            .map(role -> role.getName())
+        List<RoleName> roleNames = user.getRoles().stream()
+            .map(Role::getName)
             .collect(Collectors.toList());
 
         String token = Jwts.builder()
@@ -97,7 +97,7 @@ public class AuthService implements IAuthService {
         User user = userMapper.toEntity(request);
         user.setPassword(securityConfig.passwordEncoder().encode(request.getPassword()));
 
-        Role userRole = roleRepository.findByName("USER")
+        Role userRole = roleRepository.findByName(RoleName.USER)
             .orElseThrow(() -> new RuntimeException("No USER role in the database"));
 
         Set<Role> roles = new HashSet<>();
@@ -119,7 +119,7 @@ public class AuthService implements IAuthService {
         User user = userRepository.findByEmail(request.getEmail())
             .orElseThrow(() -> new RuntimeException("User not found"));
 
-        List<String> roleNames = user.getRoles().stream()
+        List<RoleName> roleNames = user.getRoles().stream()
             .map(role -> role.getName())
             .collect(Collectors.toList());
 
