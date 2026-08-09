@@ -17,7 +17,6 @@ import com.example.spring_rest.service.AuthService;
 
 import jakarta.validation.Valid;
 
-@CrossOrigin(origins = "https://brave-tree-013702d10.7.azurestaticapps.net")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
