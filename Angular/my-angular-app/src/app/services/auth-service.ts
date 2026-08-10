@@ -8,7 +8,7 @@ export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
 
-  private readonly baserUrl = 'https://heni-container-backend.internal.yellowrock-d6ee80d6.westeurope.azurecontainerapps.io/api/auth'
+  private readonly baserUrl = 'https://heni-container-backend.yellowrock-d6ee80d6.westeurope.azurecontainerapps.io/api/auth'
 
   token = signal<string | null>(localStorage.getItem('token'));
   roles = signal<Role[]>(JSON.parse(localStorage.getItem('roles') ?? '[]'));

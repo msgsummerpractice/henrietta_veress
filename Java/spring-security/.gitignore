@@ -36,4 +36,4 @@ node_modules/
 .angular/
 dist/
 
-.env
+src/main/resources/env.properties
